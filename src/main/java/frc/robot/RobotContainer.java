@@ -28,8 +28,8 @@ public class RobotContainer {
   private final DriveTrain m_driveTrain = new DriveTrain();
   private final ExampleCommand m_autoCommand = new ExampleCommand(m_driveTrain);
 
-  Joystick leftJoystick = new Joystick(usbLeftJoystick);
-  Joystick rightJoystick = new Joystick(usbRightJoystick);
+  Joystick leftJoystick = new Joystick(xBoxLeftJoystick);
+  Joystick rightJoystick = new Joystick(xBoxRightJoystick);
  
 
   
