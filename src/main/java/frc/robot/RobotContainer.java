@@ -30,6 +30,8 @@ public class RobotContainer {
 
   Joystick leftJoystick = new Joystick(usbLeftJoystick);
   Joystick rightJoystick = new Joystick(usbRightJoystick);
+  XboxController leftXbox = new XboxController(usbLeftJoystick);
+  XboxController rightXbox = new XboxController(usbRightJoystick);
  
 
   
@@ -41,7 +43,7 @@ public class RobotContainer {
   public RobotContainer() {
     // Configure the button bindings
     configureButtonBindings();
-    m_driveTrain.setDefaultCommand(new DriveWithJoystick(m_driveTrain, leftJoystick, rightJoystick));
+    m_driveTrain.setDefaultCommand(new DriveWithJoystick(m_driveTrain, leftXbox, rightXbox));
 
   }
 

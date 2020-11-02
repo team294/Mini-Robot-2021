@@ -9,16 +9,23 @@ package frc.robot.commands;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.DriveTrain;
+import edu.wpi.first.wpilibj.GenericHID;
 
 public class DriveWithJoystick extends CommandBase {
   private final DriveTrain driveTrain;
-  private final Joystick leftJoystick;
-  private final Joystick rightJoystick;
+  private final GenericHID leftJoystick;
+  private final GenericHID rightJoystick;
   private double leftPercent, rightPercent;
   /**
    * Creates a new DriveWithJoystick to control two motors.
    */
   public DriveWithJoystick(DriveTrain driveTrain, Joystick leftJoystick, Joystick rightJoystick) {
+    this.driveTrain = driveTrain;
+    this.leftJoystick = leftJoystick;
+    this.rightJoystick = rightJoystick;
+    addRequirements(driveTrain);
+  }
+  public DriveWithJoystick(DriveTrain driveTrain, GenericHID leftJoystick, GenericHID rightJoystick) {
     this.driveTrain = driveTrain;
     this.leftJoystick = leftJoystick;
     this.rightJoystick = rightJoystick;
