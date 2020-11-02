@@ -29,11 +29,9 @@ public class RobotContainer {
   private final DriveTrain m_driveTrain = new DriveTrain();
   private final DriveWithDelay m_autoCommand = new DriveWithDelay(m_driveTrain, 0.5, 0.5, 5000);
 
-  Joystick leftJoystick = new Joystick(xboxLeftJoystick);
-  Joystick rightJoystick = new Joystick(xboxRightJoystick);
- 
-
-  
+  XboxController xboxController = new XboxController(usbXboxController);
+  // Joystick leftJoystick = new Joystick(usbLeftJoystick);
+  // Joystick rightJoystick = new Joystick(usbRightJoystick); 
 
 
   /**
@@ -42,7 +40,8 @@ public class RobotContainer {
   public RobotContainer() {
     // Configure the button bindings
     configureButtonBindings();
-    m_driveTrain.setDefaultCommand(new DriveWithJoystick(m_driveTrain, leftJoystick, rightJoystick));
+    // m_driveTrain.setDefaultCommand(new DriveWithJoystick(m_driveTrain, leftJoystick, rightJoystick));
+    m_driveTrain.setDefaultCommand(new DriveWithJoystick(m_driveTrain, xboxController));
 
   }
 
@@ -53,8 +52,12 @@ public class RobotContainer {
    * {@link edu.wpi.first.wpilibj2.command.button.JoystickButton}.
    */
   private void configureButtonBindings() {
+    configureXboxButtons();
   }
 
+  private void configureXboxButtons() {
+
+  }
 
   /**
    * Use this to pass the autonomous command to the main {@link Robot} class.
