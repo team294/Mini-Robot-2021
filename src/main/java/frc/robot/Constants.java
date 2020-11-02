@@ -24,8 +24,8 @@ public final class Constants {
     }
 
     public static final class OIConstants {       
-        public static final int usbLeftJoystick = 1;
-        public static final int usbRightJoystick = 5;    
+        public static final int usbLeftJoystick = 0;
+        public static final int usbRightJoystick = 1;    
     }
 
 }
