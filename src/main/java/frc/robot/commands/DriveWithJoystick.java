@@ -6,7 +6,6 @@
 /*----------------------------------------------------------------------------*/
 
 package frc.robot.commands;
-import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.DriveTrain;
 import edu.wpi.first.wpilibj.XboxController;
@@ -16,28 +15,15 @@ import static edu.wpi.first.wpilibj.GenericHID.Hand.*;
 
 public class DriveWithJoystick extends CommandBase {
   private final DriveTrain driveTrain;
-  private final Joystick leftJoystick;
-  private final Joystick rightJoystick;
   private double leftPercent, rightPercent;
   private XboxController controller;
-  private boolean isController;
 
   /**
    * Creates a new DriveWithJoystick to control two motors.
    */
-  public DriveWithJoystick(DriveTrain driveTrain, Joystick leftJoystick, Joystick rightJoystick) {
-    this.driveTrain = driveTrain;
-    this.leftJoystick = leftJoystick;
-    this.rightJoystick = rightJoystick;
-    this.isController = false;
-    addRequirements(driveTrain);
-  }
   public DriveWithJoystick(DriveTrain driveTrain, XboxController controller) {
     this.driveTrain = driveTrain;
     this.controller = controller;
-    this.leftJoystick = null;
-    this.rightJoystick = null;
-    this.isController = true;
     addRequirements(driveTrain);
   }
   // Called when the command is initially scheduled.
@@ -48,15 +34,8 @@ public class DriveWithJoystick extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    if (!isController) {
-      leftPercent = -leftJoystick.getY();
-      rightPercent = -rightJoystick.getY();
-      // System.out.println("Drive With Joy "+ leftPercent + rightPercent);
-    } else if (isController) 
-    {
-      leftPercent = -controller.getY(kLeft);
-      rightPercent = -controller.getY(kRight);
-    }
+    leftPercent = -controller.getY(kLeft);
+    rightPercent = -controller.getY(kRight);
     driveTrain.tankDrive(leftPercent, rightPercent);
   }
 
