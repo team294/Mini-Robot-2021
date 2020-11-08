@@ -24,9 +24,9 @@ public final class Constants {
     }
 
     public static final class OIConstants {
-        public static final int usbLeftJoystick = 0;
+        public static final int usbLeftJoystick = 2;
         public static final int usbRightJoystick = 1;
-        public static final int usbxBoxController = 2; // GET VALUE OF PORT FROM DRIVER STATION
+        public static final int usbxBoxController = 0; // GET VALUE OF PORT FROM DRIVER STATION
     }
 
 }
