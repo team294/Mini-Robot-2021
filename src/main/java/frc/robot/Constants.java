@@ -23,9 +23,10 @@ public final class Constants {
         public static final int canRightDriveMotor = 20;
     }
 
-    public static final class OIConstants {       
-        public static final int xBoxLeftJoystick = 1;
-        public static final int xBoxRightJoystick = 5;    
+    public static final class OIConstants {
+        public static final int usbLeftJoystick = 0;
+        public static final int usbRightJoystick = 1;
+        public static final int usbxBoxController = 2; // GET VALUE OF PORT FROM DRIVER STATION
     }
 
 }

@@ -9,26 +9,22 @@ package frc.robot.commands;
 
 import frc.robot.subsystems.DriveTrain;
 import edu.wpi.first.wpilibj2.command.CommandBase;
+import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;
+import edu.wpi.first.wpilibj.GenericHID;
 
-/**
- * An example command that uses an example subsystem.
- */
-public class HalfDrive extends CommandBase {
+
+public class DriveWithxBoxControl extends CommandBase {
+  @SuppressWarnings({"PMD.UnusedPrivateField", "PMD.SingularField"})
   private final DriveTrain driveTrain;
   private final XboxController xBoxController;
   private double leftPercent, rightPercent;
-  int counter = 0;
-  boolean driving = false;
 
-  /**
-   * Creates a new ExampleCommand.
-   *
-   * @param subsystem The subsystem used by this command.
-   */
-  public HalfDrive(DriveTrain driveTrain, XboxController xBoxController) {
+  // Adding Command to drive with xBox Controller.
+  public DriveWithxBoxControl(DriveTrain driveTrain, XboxController xBoxController) {
     this.driveTrain = driveTrain;
     this.xBoxController = xBoxController;
+    // Use addRequirements() here to declare subsystem dependencies.
     addRequirements(driveTrain);
   }
 
@@ -40,27 +36,19 @@ public class HalfDrive extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    if (xBoxController.getXButtonPressed() && !driving) {
-      driving = true;
-    }
-
-    if (driving) {
-      driveTrain.tankDrive(0.5, 0.5);
-      counter++;
-    }
+      leftPercent = xBoxController.getY(GenericHID.Hand.valueOf("kLeft"));
+      rightPercent = xBoxController.getY(GenericHID.Hand.valueOf("kRight"));
+      driveTrain.tankDrive(leftPercent, rightPercent);
   }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    driveTrain.tankDrive(0, 0);
-    counter = 0;
-    driving = false;
   }
 
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return counter > 250;
+    return false;
   }
 }

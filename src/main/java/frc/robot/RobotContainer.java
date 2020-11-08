@@ -10,6 +10,7 @@ package frc.robot;
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.XboxController;
 import frc.robot.commands.DriveWithJoystick;
+import frc.robot.commands.DriveWithxBoxControl;
 import frc.robot.commands.ExampleCommand;
 import frc.robot.commands.HalfDrive;
 import frc.robot.subsystems.DriveTrain;
@@ -26,12 +27,14 @@ import static frc.robot.Constants.OIConstants.*;
  */
 public class RobotContainer {
   // The robot's subsystems and commands are defined here...
+  Joystick leftJoystick = new Joystick(usbLeftJoystick);
+  Joystick rightJoystick = new Joystick(usbRightJoystick);
+  XboxController xBoxController = new XboxController(usbxBoxController);
+
   private final DriveTrain m_driveTrain = new DriveTrain();
   private final ExampleCommand m_autoCommand = new ExampleCommand(m_driveTrain);
-  private final HalfDrive m_drive5sec = new HalfDrive(m_driveTrain);
-
-  Joystick leftJoystick = new Joystick(xBoxLeftJoystick);
-  Joystick rightJoystick = new Joystick(xBoxRightJoystick);
+  private final HalfDrive m_drive5sec = new HalfDrive(m_driveTrain, xBoxController);
+  private final DriveWithxBoxControl m_xboxdrive = new DriveWithxBoxControl(m_driveTrain, xBoxController);
  
 
   
@@ -43,7 +46,7 @@ public class RobotContainer {
   public RobotContainer() {
     // Configure the button bindings
     configureButtonBindings();
-    m_driveTrain.setDefaultCommand(new DriveWithJoystick(m_driveTrain, leftJoystick, rightJoystick));
+    m_driveTrain.setDefaultCommand(new DriveWithxBoxControl(m_driveTrain, xBoxController));
 
   }
 
