@@ -10,11 +10,15 @@ package frc.robot;
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.XboxController;
 import frc.robot.commands.DriveWithJoystick;
+import frc.robot.commands.DriveSetPercentOutput;
 import frc.robot.commands.ExampleCommand;
 import frc.robot.subsystems.DriveTrain;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj.Joystick;
 import static frc.robot.Constants.OIConstants.*;
+
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+
 
 
 /**
@@ -26,7 +30,8 @@ import static frc.robot.Constants.OIConstants.*;
 public class RobotContainer {
   // The robot's subsystems and commands are defined here...
   private final DriveTrain m_driveTrain = new DriveTrain();
-  private final ExampleCommand m_autoCommand = new ExampleCommand(m_driveTrain);
+  private final ExampleCommand m_autoCommand = new ExampleCommand(m_driveTrain);  // runs in autonomous
+ 
 
   Joystick leftJoystick = new Joystick(usbLeftJoystick);
   Joystick rightJoystick = new Joystick(usbRightJoystick);
@@ -41,9 +46,26 @@ public class RobotContainer {
   public RobotContainer() {
     // Configure the button bindings
     configureButtonBindings();
+    configureShuffleboard(); // configure shuffleboard
+
     m_driveTrain.setDefaultCommand(new DriveWithJoystick(m_driveTrain, leftJoystick, rightJoystick));
 
   }
+
+  /**
+   * Define Shuffleboard mappings.
+   */
+  public void configureShuffleboard() {
+    // drive train subsystem
+    SmartDashboard.putNumber("Left Motor",0);
+    SmartDashboard.putNumber("Right Motor",0);
+
+
+    SmartDashboard.putData("DriveTurnLeft", new DriveSetPercentOutput(-0.4, 0.4, m_driveTrain));
+   
+  }
+  
+  
 
   /**
    * Use this method to define your button->command mappings.  Buttons can be created by
@@ -64,6 +86,7 @@ public class RobotContainer {
     // An ExampleCommand will run in autonomous
     return m_autoCommand;
   }
+  
 
   public void teleopPeriodic() {
    

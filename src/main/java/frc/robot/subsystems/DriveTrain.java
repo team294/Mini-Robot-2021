@@ -17,6 +17,7 @@ import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 import static frc.robot.Constants.DriveConstants.*;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 
 
@@ -89,6 +90,7 @@ public class DriveTrain extends SubsystemBase {
 
   @Override
   public void periodic() {
+    SmartDashboard.putNumber("Left Motor", leftMotor1.getMotorOutputVoltage());
     // This method will be called once per scheduler run
   }
 }
