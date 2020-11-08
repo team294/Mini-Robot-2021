@@ -24,6 +24,7 @@ public class DriveSetPercentOutput extends CommandBase {
     this.driveTrain = driveTrain;
     this.lPercent = lPercent;
     this.rPercent = rPercent;
+    addRequirements(driveTrain);
   }
 
   // Called when the command is initially scheduled.
