@@ -30,6 +30,8 @@ public class RobotContainer {
 
   Joystick leftJoystick = new Joystick(usbLeftJoystick);
   Joystick rightJoystick = new Joystick(usbRightJoystick);
+
+  // Declaring the variables "leftXbox" and "rightXbox" with the XboxContoller constructer and their constants. 
   XboxController leftXbox = new XboxController(usbLeftJoystick);
   XboxController rightXbox = new XboxController(usbRightJoystick);
  
@@ -43,6 +45,7 @@ public class RobotContainer {
   public RobotContainer() {
     // Configure the button bindings
     configureButtonBindings();
+    // replaced the joysticks with the xbox's joysticks. Instead of using the joystick's method, use the GenericHID method. 
     m_driveTrain.setDefaultCommand(new DriveWithJoystick(m_driveTrain, leftXbox, rightXbox));
 
   }

@@ -14,6 +14,7 @@ import edu.wpi.first.wpilibj.GenericHID;
 public class DriveWithJoystick extends CommandBase {
   private final DriveTrain driveTrain;
   private final GenericHID leftJoystick;
+  //Changes the joystick to the GenericHID object because couldn't use the Joystick object for the xbox's controller. 
   private final GenericHID rightJoystick;
   private double leftPercent, rightPercent;
   /**
@@ -25,6 +26,7 @@ public class DriveWithJoystick extends CommandBase {
     this.rightJoystick = rightJoystick;
     addRequirements(driveTrain);
   }
+  // Changes them to GenericHID again to fit it with the xbox controller. 
   public DriveWithJoystick(DriveTrain driveTrain, GenericHID leftJoystick, GenericHID rightJoystick) {
     this.driveTrain = driveTrain;
     this.leftJoystick = leftJoystick;
