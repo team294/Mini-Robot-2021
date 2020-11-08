@@ -6,19 +6,20 @@
 /*----------------------------------------------------------------------------*/
 
 package frc.robot.commands;
+import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.DriveTrain;
 
 public class DriveWithJoystick extends CommandBase {
   private final DriveTrain driveTrain;
-  private final Joystick leftJoystick;
-  private final Joystick rightJoystick;
+  private final GenericHID leftJoystick;//I changed this from Joystick to GenericHID because we need to use an Xbox controller, and joystick wasn't working. Xbox controller and joystick extend from GenericHID
+  private final GenericHID rightJoystick;
   private double leftPercent, rightPercent;
   /**
    * Creates a new DriveWithJoystick to control two motors.
    */
-  public DriveWithJoystick(DriveTrain driveTrain, Joystick leftJoystick, Joystick rightJoystick) {
+  public DriveWithJoystick(DriveTrain driveTrain, GenericHID leftJoystick, GenericHID rightJoystick) {
     this.driveTrain = driveTrain;
     this.leftJoystick = leftJoystick;
     this.rightJoystick = rightJoystick;

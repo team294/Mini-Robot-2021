@@ -30,7 +30,8 @@ public class RobotContainer {
 
   Joystick leftJoystick = new Joystick(usbLeftJoystick);
   Joystick rightJoystick = new Joystick(usbRightJoystick);
- 
+  XboxController leftXbox = new XboxController(usbLeftJoystick);
+  XboxController rightXbox = new XboxController(usbRightJoystick); //This code makes new variables called leftXbox and rightXbox, and makes them XboxControllers, which is the constructor. 
 
   
 
