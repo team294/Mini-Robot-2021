@@ -28,4 +28,8 @@ public final class Constants {
         public static final int usbRightJoystick = 1;    
     }
 
+    public static final class ShooterConstants {
+        public static final int dioExitBallSensor = 0;
+    }
+
 }

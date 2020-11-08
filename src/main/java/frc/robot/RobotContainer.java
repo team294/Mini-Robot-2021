@@ -12,7 +12,8 @@ import edu.wpi.first.wpilibj.XboxController;
 import frc.robot.commands.DriveWithJoystick;
 import frc.robot.commands.DriveSetPercentOutput;
 import frc.robot.commands.ExampleCommand;
-import frc.robot.subsystems.DriveTrain;
+import frc.robot.commands.*;
+import frc.robot.subsystems.*;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj.Joystick;
 import static frc.robot.Constants.OIConstants.*;
@@ -30,8 +31,9 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 public class RobotContainer {
   // The robot's subsystems and commands are defined here...
   private final DriveTrain m_driveTrain = new DriveTrain();
+  private final Shooter shooter = new Shooter();
+  
   private final ExampleCommand m_autoCommand = new ExampleCommand(m_driveTrain);  // runs in autonomous
- 
 
   Joystick leftJoystick = new Joystick(usbLeftJoystick);
   Joystick rightJoystick = new Joystick(usbRightJoystick);
@@ -62,7 +64,7 @@ public class RobotContainer {
 
 
     SmartDashboard.putData("DriveTurnLeft", new DriveSetPercentOutput(-0.4, 0.4, m_driveTrain));
-   
+    SmartDashboard.putData("CheckBallExit", new BallExit( shooter));
   }
   
   
