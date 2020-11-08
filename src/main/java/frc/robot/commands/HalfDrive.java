@@ -18,8 +18,8 @@ public class HalfDrive extends CommandBase {
   private final DriveTrain driveTrain;
   private final XboxController xBoxController;
   private double leftPercent, rightPercent;
-  int counter = 0;
-  boolean driving = false;
+  private int counter = 0;
+  private boolean driving = false;
 
   /**
    * Creates a new ExampleCommand.
@@ -41,12 +41,12 @@ public class HalfDrive extends CommandBase {
   @Override
   public void execute() {
     if (xBoxController.getXButtonPressed() && !driving) {
-      driving = true;
+      this.driving = true;
     }
 
     if (driving) {
       driveTrain.tankDrive(0.5, 0.5);
-      counter++;
+      this.counter++;
     }
   }
 
@@ -54,8 +54,8 @@ public class HalfDrive extends CommandBase {
   @Override
   public void end(boolean interrupted) {
     driveTrain.tankDrive(0, 0);
-    counter = 0;
-    driving = false;
+    this.counter = 0;
+    this.driving = false;
   }
 
   // Returns true when the command should end.
