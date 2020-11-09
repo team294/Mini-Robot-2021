@@ -10,6 +10,7 @@ package frc.robot.subsystems;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpilibj.Counter;
 import edu.wpi.first.wpilibj.DigitalInput;
+import edu.wpi.first.wpilibj.DigitalSource;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 import static frc.robot.Constants.ShooterConstants.*;
@@ -19,12 +20,14 @@ public class Shooter extends SubsystemBase {
   /**
    * Creates a new VelocityBallExit.
    */
-  private final DigitalInput  input = new DigitalInput(dioExitBallSensor);
-  private final Counter count = new Counter( dioExitBallSensor+1);
-
+ 
+  private final DigitalInput  input = new DigitalInput(dioExitBallSensor+1);
+  
+  private final Counter count = new Counter( dioExitBallSensor);
+ 
   public Shooter() {
-
-
+    count.setSemiPeriodMode(true);
+    count.setUpSourceEdge(true, false);
   }
 
   /**
@@ -33,9 +36,15 @@ public class Shooter extends SubsystemBase {
   **/
   public void getBall() {
     boolean ball =  !input.get();
-    int shotCount = count.get();
+    int shotCount = count.get()/2;    // semi period mode counts on the up and down
+    double period = count.getPeriod();
     SmartDashboard.putBoolean("Ball Exit",ball);
     SmartDashboard.putNumber("Shots Fired",shotCount);
+    SmartDashboard.putNumber("Period", period);
+  }
+
+  public void zeroCount(){
+    count.reset();
   }
 
   
