@@ -18,8 +18,7 @@ public class HalfDrive extends CommandBase {
   private final DriveTrain driveTrain;
   private final XboxController xBoxController;
   private double leftPercent, rightPercent;
-  private int counter = 0;
-  private boolean driving = false;
+  private int counter;
 
   /**
    * Creates a new ExampleCommand.
@@ -35,19 +34,14 @@ public class HalfDrive extends CommandBase {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
+    this.counter = 0;
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    if (xBoxController.getXButtonPressed() && !driving) {
-      this.driving = true;
-    }
-
-    if (driving) {
-      driveTrain.tankDrive(0.5, 0.5);
-      this.counter++;
-    }
+    driveTrain.tankDrive(1, 1);
+    this.counter++;
   }
 
   // Called once the command ends or is interrupted.
@@ -55,7 +49,6 @@ public class HalfDrive extends CommandBase {
   public void end(boolean interrupted) {
     driveTrain.tankDrive(0, 0);
     this.counter = 0;
-    this.driving = false;
   }
 
   // Returns true when the command should end.

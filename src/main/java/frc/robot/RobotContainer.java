@@ -9,6 +9,9 @@ package frc.robot;
 
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.XboxController;
+import edu.wpi.first.wpilibj.XboxController.Button;
+import edu.wpi.first.wpilibj2.command.button.JoystickButton;
+import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.commands.DriveWithJoystick;
 import frc.robot.commands.DriveWithxBoxControl;
 import frc.robot.commands.ExampleCommand;
@@ -17,6 +20,8 @@ import frc.robot.subsystems.DriveTrain;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj.Joystick;
 import static frc.robot.Constants.OIConstants.*;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+
 
 
 /**
@@ -37,15 +42,16 @@ public class RobotContainer {
   private final DriveWithxBoxControl m_xboxdrive = new DriveWithxBoxControl(m_driveTrain, xBoxController);
  
 
-  
-
 
   /**
    * The container for the robot.  Contains subsystems, OI devices, and commands.
    */
   public RobotContainer() {
     // Configure the button bindings
+    configureXboxButtons();
     configureButtonBindings();
+    configureShuffleBoard();
+
     m_driveTrain.setDefaultCommand(new DriveWithxBoxControl(m_driveTrain, xBoxController));
 
   }
@@ -59,6 +65,16 @@ public class RobotContainer {
   private void configureButtonBindings() {
   }
 
+  private void configureXboxButtons() {
+    JoystickButton xButton = new JoystickButton(xBoxController, 3);
+
+    xButton.whenPressed(m_drive5sec);
+  }
+
+  public void configureShuffleBoard() {
+    SmartDashboard.putData("5 sec", m_drive5sec);
+
+  }
 
   /**
    * Use this to pass the autonomous command to the main {@link Robot} class.
@@ -71,7 +87,6 @@ public class RobotContainer {
   }
 
   public void teleopPeriodic() {
-   
   }
 
 
