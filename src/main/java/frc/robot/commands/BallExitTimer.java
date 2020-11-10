@@ -8,30 +8,30 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.Constants.ShooterConstants;
 import frc.robot.subsystems.Shooter;
 
-public class BallExit extends CommandBase {
+
+public class BallExitTimer extends CommandBase {
   private final Shooter shooter;
   /**
-   * Creates a new BallExit.
+   * Creates a new BallExitTimer.
    */
-  public BallExit(Shooter shooter) {
+  public BallExitTimer(Shooter shooter) {
     this.shooter = shooter;
+    addRequirements(shooter);
     // Use addRequirements() here to declare subsystem dependencies.
   }
 
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    shooter.zeroCount();    // starts count at 9
+    shooter.zeroCount();
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    
-    shooter.getBall( );
+    shooter.getTimeDelay();
   }
 
   // Called once the command ends or is interrupted.
