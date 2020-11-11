@@ -29,7 +29,8 @@ public final class Constants {
     }
 
     public static final class ShooterConstants {
-        public static final int dioExitBallSensor = 0;
+        public static final int dioExitBallSensorA = 0;
+        public static final int dioExitBallSensorB = 1;
     }
 
 }

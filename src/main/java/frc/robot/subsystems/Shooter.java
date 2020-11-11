@@ -21,10 +21,11 @@ public class Shooter extends SubsystemBase {
    */
   boolean ball=false, lastBall=false;
   int shotCount = 0;
-  double timeDelay, startTime = 0, endTime = 0;
+  double timeDelay, speed, startTime = 0, endTime = 0;
  
-  private final DigitalInput  input = new DigitalInput(dioExitBallSensor);
-  
+  private final DigitalInput  inputA = new DigitalInput(dioExitBallSensorA);
+  private final DigitalInput  inputB = new DigitalInput(dioExitBallSensorB);
+ 
  
   public Shooter() {
   }
@@ -44,17 +45,19 @@ public class Shooter extends SubsystemBase {
     // this is for one detector sensing ball presence.  Needs to be 2 detectors so ball diameter doesn't 
     // enter into calculatons
 
-    ball =  !input.get();
+    ball =  !inputA.get();      // This needs to be on an interrupt since only run every 20 msec
     SmartDashboard.putBoolean("Ball Exit",ball);
     
     if(!lastBall && ball){
       startTime = Timer.getFPGATimestamp();
       ++shotCount;
-      while ( ball = !input.get() ){
+      while ( inputB.get() ){   // no ball in 2nd sensor
         endTime = Timer.getFPGATimestamp();
         timeDelay = endTime - startTime;
         if (timeDelay > .05) break;  // Don't hang here forever should be <.05 when 2 detectors
                                   // 0.05 won't trigger watchdog, but will lose 1 or 2 DS updates
+         // calculate speed  for 3 inch separation of sensors
+        speed = 1/( 4 * timeDelay);   // result in ft/sec
       }
     }
     lastBall = ball;
@@ -63,6 +66,8 @@ public class Shooter extends SubsystemBase {
     
     SmartDashboard.putNumber("Shots Fired",shotCount);
     SmartDashboard.putNumber("Time Delay", timeDelay);
+    SmartDashboard.putNumber("Velocity", speed);                     
+
   }
 
   public void zeroCount(){
