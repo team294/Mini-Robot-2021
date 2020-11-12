@@ -21,7 +21,7 @@ public class Shooter extends SubsystemBase {
    */
   boolean ball=false, lastBall=false;
   int shotCount = 0;
-  double timeDelay, speed, startTime = 0, endTime = 0;
+  double timeDelay, velocity, startTime = 0, endTime = 0;
  
   private final DigitalInput  inputA = new DigitalInput(dioExitBallSensorA);
   private final DigitalInput  inputB = new DigitalInput(dioExitBallSensorB);
@@ -36,14 +36,12 @@ public class Shooter extends SubsystemBase {
      SmartDashboard.putNumber("Period", timeDelay);
   }
 **/
-  public void getTimeDelay(){  //  This has only 20 msec resolution due to update time
-
-    // to fix use interupts or stay in while loop until next detector sensed.  
+  public void getTimeDelay(){  
+    //  This has only 20 msec resolution due to update time
+    // to fix use interupts   
     // if max velocity is 50 feet/sec and minimum velocity is 5 fps and sensors are 3 inches apart
     //   then time difference is between 5 and 50
-
-    // this is for one detector sensing ball presence.  Needs to be 2 detectors so ball diameter doesn't 
-    // enter into calculatons
+    
 
     ball =  !inputA.get();      // This needs to be on an interrupt since only run every 20 msec
     SmartDashboard.putBoolean("Ball Exit",ball);
@@ -54,10 +52,10 @@ public class Shooter extends SubsystemBase {
       while ( inputB.get() ){   // no ball in 2nd sensor
         endTime = Timer.getFPGATimestamp();
         timeDelay = endTime - startTime;
-        if (timeDelay > .05) break;  // Don't hang here forever should be <.05 when 2 detectors
+        if (timeDelay > .05) break;  // Don't hang here forever should be <.05 
                                   // 0.05 won't trigger watchdog, but will lose 1 or 2 DS updates
-         // calculate speed  for 3 inch separation of sensors
-        speed = 1/( 4 * timeDelay);   // result in ft/sec
+         // calculate velocity  for 3 inch separation of sensors
+        velocity = 1/( 4 * timeDelay);   // result in ft/sec
       }
     }
     lastBall = ball;
@@ -66,7 +64,7 @@ public class Shooter extends SubsystemBase {
     
     SmartDashboard.putNumber("Shots Fired",shotCount);
     SmartDashboard.putNumber("Time Delay", timeDelay);
-    SmartDashboard.putNumber("Velocity", speed);                     
+    SmartDashboard.putNumber("Velocity", velocity);                     
 
   }
 
