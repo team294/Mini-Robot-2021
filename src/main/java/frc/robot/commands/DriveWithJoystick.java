@@ -6,22 +6,22 @@
 /*----------------------------------------------------------------------------*/
 
 package frc.robot.commands;
-import edu.wpi.first.wpilibj.Joystick;
+import edu.wpi.first.wpilibj.XboxController;
+import edu.wpi.first.wpilibj.GenericHID.Hand;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.DriveTrain;
 
 public class DriveWithJoystick extends CommandBase {
   private final DriveTrain driveTrain;
-  private final Joystick leftJoystick;
-  private final Joystick rightJoystick;
+ 
+  private final XboxController controller;
   private double leftPercent, rightPercent;
   /**
    * Creates a new DriveWithJoystick to control two motors.
    */
-  public DriveWithJoystick(DriveTrain driveTrain, Joystick leftJoystick, Joystick rightJoystick) {
+  public DriveWithJoystick(DriveTrain driveTrain, XboxController controller) {
     this.driveTrain = driveTrain;
-    this.leftJoystick = leftJoystick;
-    this.rightJoystick = rightJoystick;
+    this.controller = controller;
     addRequirements(driveTrain);
   }
 
@@ -33,8 +33,8 @@ public class DriveWithJoystick extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    leftPercent = -leftJoystick.getY();
-    rightPercent = -rightJoystick.getY();
+    leftPercent = -controller.getY(Hand.kLeft);
+    rightPercent = -controller.getY(Hand.kRight);
     // System.out.println("Drive With Joy "+ leftPercent + rightPercent);
     driveTrain.tankDrive(leftPercent, rightPercent);
   }

@@ -48,7 +48,7 @@ public class Shooter extends SubsystemBase {
     
     if(!lastBall && ball){
       startTime = Timer.getFPGATimestamp();
-      ++shotCount;
+      ++shotCount;          //  TODO  this counts ball going either way??
       while ( inputB.get() ){   // no ball in 2nd sensor
         endTime = Timer.getFPGATimestamp();
         timeDelay = endTime - startTime;

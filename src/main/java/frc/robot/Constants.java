@@ -24,8 +24,7 @@ public final class Constants {
     }
 
     public static final class OIConstants {       
-        public static final int usbLeftJoystick = 0;
-        public static final int usbRightJoystick = 1;    
+       public static final int usbXboxController = 0;
     }
 
     public static final class ShooterConstants {

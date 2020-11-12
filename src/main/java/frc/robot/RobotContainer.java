@@ -32,13 +32,8 @@ public class RobotContainer {
   
   private final ExampleCommand m_autoCommand = new ExampleCommand(m_driveTrain);  // runs in autonomous
 
-  Joystick leftJoystick = new Joystick(usbLeftJoystick);
-  Joystick rightJoystick = new Joystick(usbRightJoystick);
- 
-
-  
-
-
+  XboxController xboxController = new XboxController(usbXboxController);
+    
   /**
    * The container for the robot.  Contains subsystems, OI devices, and commands.
    */
@@ -47,7 +42,7 @@ public class RobotContainer {
     configureButtonBindings();
     configureShuffleboard(); // configure shuffleboard
 
-    m_driveTrain.setDefaultCommand(new DriveWithJoystick(m_driveTrain, leftJoystick, rightJoystick));
+    m_driveTrain.setDefaultCommand(new DriveWithJoystick(m_driveTrain, xboxController));
 
   }
 
