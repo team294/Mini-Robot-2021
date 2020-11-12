@@ -6,37 +6,32 @@
 /*----------------------------------------------------------------------------*/
 
 package frc.robot.commands;
-import edu.wpi.first.wpilibj.XboxController;
-import edu.wpi.first.wpilibj.GenericHID.Hand;
-import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.subsystems.DriveTrain;
 
-public class DriveWithJoystick extends CommandBase {
-  private final DriveTrain driveTrain;
- 
-  private final XboxController controller;
-  private double leftPercent, rightPercent;
+import edu.wpi.first.wpilibj2.command.CommandBase;
+import frc.robot.subsystems.Shooter;
+
+
+public class BallExitTimer extends CommandBase {
+  private final Shooter shooter;
   /**
-   * Creates a new DriveWithJoystick to control two motors.
+   * Creates a new BallExitTimer.
    */
-  public DriveWithJoystick(DriveTrain driveTrain, XboxController controller) {
-    this.driveTrain = driveTrain;
-    this.controller = controller;
-    addRequirements(driveTrain);
+  public BallExitTimer(Shooter shooter) {
+    this.shooter = shooter;
+    addRequirements(shooter);
+    // Use addRequirements() here to declare subsystem dependencies.
   }
 
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
+    shooter.zeroCount();
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    leftPercent = -controller.getY(Hand.kLeft);
-    rightPercent = -controller.getY(Hand.kRight);
-    // System.out.println("Drive With Joy "+ leftPercent + rightPercent);
-    driveTrain.tankDrive(leftPercent, rightPercent);
+    shooter.getTimeDelay();
   }
 
   // Called once the command ends or is interrupted.
