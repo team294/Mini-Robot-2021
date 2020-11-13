@@ -21,9 +21,9 @@ public class Shooter extends SubsystemBase {
   /**
    * Creates a new VelocityBallExit.
    */
-  boolean ball=false, lastBall=false;
+  boolean ball=false, lastBall;
   int shotCount = 0;
-  double timeDelay, velocity, startTime = 0, endTime = 0;
+  double timeDelay, velocity, startTime = 0, endTime = 0, lastEndTime;
  
   private final DigitalInput  inputA = new DigitalInput(dioExitBallSensorA);
   private final DigitalInput  inputB = new DigitalInput(dioExitBallSensorB);
@@ -44,42 +44,26 @@ public class Shooter extends SubsystemBase {
   }
 **/
   public void getTimeDelay(){  
-    //  This has only 20 msec resolution due to update time
-    // to fix use interupts   
-    // if max velocity is 50 feet/sec and minimum velocity is 5 fps and sensors are 3 inches apart
-    //   then time difference is between 5 and 50
     
     ball =  !inputA.get();      // This is for testing sensors only run every 20 msec
     SmartDashboard.putBoolean("Detector 1",ball);   // comment it out so it doesn't waste resources
     SmartDashboard.putBoolean("Detector 2", !inputB.get());
  
-    if(!lastBall && ball){
-      startTime = inputA.readFallingTimestamp();
-      System.out.println(startTime);
-      //startTime = Timer.getFPGATimestamp();
-      ++shotCount;          //  TODO  this counts ball going either way??
-
-      inputB.waitForInterrupt(.05, true);  // ignore previous
     
-/**
- * This messes up if watchdog interrupts - it reverts ot last interrupt 
- *   causing a negative velocity.  solution. A.  if more than 20 msec, break
- *   B. move sensors to 1.5 inches of less to keep 50 fps under 20ms
- */
+      startTime = inputA.readFallingTimestamp();
+      endTime   = inputB.readFallingTimestamp();
 
-        endTime = inputB.readFallingTimestamp();
-        System.out.println(endTime );
-        System.out.println(" ");
-
-
+      if((startTime > lastEndTime) && (endTime > startTime)){  // new Ball
+        ++shotCount;
+   
+        System.out.println("Start Time " + startTime + ":    End Time " +endTime);                
+         
         timeDelay = endTime - startTime;
-        //if ((Timer.getFPGATimestamp() - startTime) > .05) break;  // Don't hang here forever should be <.05 
-                                  // 0.05 won't trigger watchdog, but will lose 1 or 2 DS updates
-         // calculate velocity  for 3 inch separation of sensors
+          // calculate velocity  for 3 inch separation of sensors
         velocity = 1/( 4 * timeDelay);   // result in ft/sec
     //  }
     }
-    lastBall = ball;
+    lastEndTime = endTime;
  
      
     SmartDashboard.putNumber("Shots Fired",shotCount);
@@ -88,6 +72,11 @@ public class Shooter extends SubsystemBase {
 
   
 /*** 
+    //  This has only 20 msec resolution due to update time
+    // to fix use interupts   
+    // if max velocity is 50 feet/sec and minimum velocity is 5 fps and sensors are 3 inches apart
+    //   then time difference is between 5 and 50
+
   ball =  !inputA.get();      // This needs to be on an interrupt since only run every 20 msec
   SmartDashboard.putBoolean("Ball Exit",ball);
   

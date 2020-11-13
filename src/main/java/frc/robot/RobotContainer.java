@@ -55,7 +55,7 @@ public class RobotContainer {
 
     SmartDashboard.putData("DriveTurnLeft", new DriveSetPercentOutput(-0.4, 0.4, m_driveTrain));
     
-    SmartDashboard.putData("CheckBallVelocity", new BallExitTimer( shooter));
+    SmartDashboard.putData("CheckBallVelocity", new BallExitVelocity( shooter));
   }
   
   

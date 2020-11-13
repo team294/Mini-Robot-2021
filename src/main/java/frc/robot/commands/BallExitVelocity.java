@@ -11,12 +11,11 @@ import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.Shooter;
 
 
-public class BallExitTimer extends CommandBase {
+public class BallExitVelocity extends CommandBase {
   private final Shooter shooter;
   /**
-   * Creates a new BallExitTimer.
-   */
-  public BallExitTimer(Shooter shooter) {
+   * Creates a new Velocity */
+  public BallExitVelocity (Shooter shooter) {
     this.shooter = shooter;
     addRequirements(shooter);
     // Use addRequirements() here to declare subsystem dependencies.
