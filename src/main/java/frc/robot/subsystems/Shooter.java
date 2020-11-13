@@ -44,24 +44,29 @@ public class Shooter extends SubsystemBase {
   }
 **/
   public void getTimeDelay(){  
+
+    /*  This method measures the time delay between when a ball breaks the beam of two sensors
     
-    ball =  !inputA.get();      // This is for testing sensors only run every 20 msec
-    SmartDashboard.putBoolean("Detector 1",ball);   // comment it out so it doesn't waste resources
+          // This is for testing sensors only run every 20 msec
+    SmartDashboard.putBoolean("Detector 1", !inputA.get());   // comment it out so it doesn't waste resources
     SmartDashboard.putBoolean("Detector 2", !inputB.get());
  
     
-      startTime = inputA.readFallingTimestamp();
-      endTime   = inputB.readFallingTimestamp();
+    startTime = inputA.readFallingTimestamp();  // Time since program started
+    endTime   = inputB.readFallingTimestamp();
 
-      if((startTime > lastEndTime) && (endTime > startTime)){  // new Ball
-        ++shotCount;
+    if((startTime > lastEndTime) && (endTime > startTime)){  // new Ball
+      ++shotCount;
+  
+      System.out.println("Start Time " + startTime + ":    End Time " +endTime);                
+        
+      timeDelay = endTime - startTime;
+        // calculate velocity  for 3 inch separation of sensors
+      //velocity = 1/( 4 * timeDelay);   // result in ft/sec
+
+      // calculate velocity  for 1.5 inch separation of sensors
+      velocity = 1/( 8 * timeDelay);   // result in ft/sec
    
-        System.out.println("Start Time " + startTime + ":    End Time " +endTime);                
-         
-        timeDelay = endTime - startTime;
-          // calculate velocity  for 3 inch separation of sensors
-        velocity = 1/( 4 * timeDelay);   // result in ft/sec
-    //  }
     }
     lastEndTime = endTime;
  
