@@ -30,6 +30,8 @@ public final class Constants {
     public static final class ShooterConstants {
         public static final int dioExitBallSensorA = 0;
         public static final int dioExitBallSensorB = 1;
+        public static final double detSpacing = 1.5;    // Velocity detector spacing in inches
+ 
     }
 
 }

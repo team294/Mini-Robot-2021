@@ -23,7 +23,6 @@ public class Shooter extends SubsystemBase {
   boolean ball=false, lastBall;
   int shotCount = 0;
   double timeDelay, velocity, startTime = 0, endTime = 0, lastEndTime;
-  double detSpacing = 1.5;    // Velocity detector spacing in inches
   double[][] shotData;
   double[] velocityData;    // I couldn't find a good way to display a double array on Shufflboard
  
@@ -74,12 +73,11 @@ public class Shooter extends SubsystemBase {
       velocityData[shotCount] = velocity;
 
       ++shotCount; 
-      if (shotCount >= 5) shotCount = 0;   
+      if (shotCount >= 5) shotCount = 0;   // 5 is limit on number of power cells
       
     }
     lastEndTime = endTime;
-    System.out.println(Arrays.deepToString(shotData));
-     
+                                  // TODO send shot count array to file log or Shuffleboard
     
  
 }
