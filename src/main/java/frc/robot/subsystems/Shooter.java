@@ -38,7 +38,6 @@ public class Shooter extends SubsystemBase {
      inputB.setUpSourceEdge(false, true);
 
      shotData = new double [5][2];
-     velocityData = new double [5];
   }
 
   
@@ -58,28 +57,31 @@ public class Shooter extends SubsystemBase {
 
     if((startTime > lastEndTime) && (endTime > startTime)){  // new Ball
      
-      System.out.println("Start Time " + startTime + ":    End Time " +endTime);                
-        
+                     
+      if (shotCount >= 5) shotCount = 0;   // 5 is limit on number of power cells
+  
       timeDelay = endTime - startTime;
       
       // calculate velocity  for detSpacing(inches)  of sensors
       velocity = 1/( 12 * timeDelay/detSpacing);   // result in ft/sec
-      SmartDashboard.putNumber("Shots Fired",shotCount + 1);  // shot 1 is in array[0]
-      SmartDashboard.putNumber("Time Delay", timeDelay);
-      SmartDashboard.putNumber("Velocity", velocity);         
+             
       
       shotData[shotCount][0] =  velocity;
       shotData[shotCount][1] = startTime;
-      velocityData[shotCount] = velocity;
-
-      ++shotCount; 
-      if (shotCount >= 5) shotCount = 0;   // 5 is limit on number of power cells
+     
+      ++shotCount;   
+      SmartDashboard.putNumber("Shots Fired",shotCount);  // shot 1 is in array[0]
+      SmartDashboard.putNumber("Time Delay", timeDelay);
+      SmartDashboard.putNumber("Velocity", velocity);         
+    
+      System.out.println("Shot " + shotCount + ";  Start Time " + startTime + ":    Velocity " +velocity );  
       
+      // TODO send shot count array to file log       
     }
     lastEndTime = endTime;
-                                  // TODO send shot count array to file log or Shuffleboard
+
+
     
- 
 }
 
   public void zeroCount(){
