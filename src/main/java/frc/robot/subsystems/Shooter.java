@@ -82,7 +82,7 @@ public class Shooter extends SubsystemBase {
 
 
     
-}
+  }
 
   public void zeroCount(){
     shotCount = 0;
