@@ -9,7 +9,8 @@ package frc.robot.subsystems;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpilibj.DigitalInput;
-import edu.wpi.first.wpilibj.Timer;
+import edu.wpi.first.wpilibj.InterruptableSensorBase;
+
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 import static frc.robot.Constants.ShooterConstants.*;
@@ -17,55 +18,70 @@ import static frc.robot.Constants.ShooterConstants.*;
 
 public class Shooter extends SubsystemBase {
   /**
-   * Creates a new VelocityBallExit.
+   * Creates a new BallExitVelocity.
    */
-  boolean ball=false, lastBall=false;
+  boolean ball=false, lastBall;
   int shotCount = 0;
-  double timeDelay, velocity, startTime = 0, endTime = 0;
+  double timeDelay, velocity, startTime = 0, endTime = 0, lastEndTime;
+  double[][] shotData;
+  double[] velocityData;    // I couldn't find a good way to display a double array on Shufflboard
  
   private final DigitalInput  inputA = new DigitalInput(dioExitBallSensorA);
   private final DigitalInput  inputB = new DigitalInput(dioExitBallSensorB);
- 
+   
  
   public Shooter() {
+
+     inputA.requestInterrupts();
+     inputA.setUpSourceEdge(false, true);
+     inputB.requestInterrupts();
+     inputB.setUpSourceEdge(false, true);
+
+     shotData = new double [5][2];
   }
 
-  /**  
-  public void getPeriod() {
-     SmartDashboard.putNumber("Shots Fired",shotCount);
-     SmartDashboard.putNumber("Period", timeDelay);
-  }
-**/
+  
   public void getTimeDelay(){  
-    //  This has only 20 msec resolution due to update time
-    // to fix use interupts   
-    // if max velocity is 50 feet/sec and minimum velocity is 5 fps and sensors are 3 inches apart
-    //   then time difference is between 5 and 50
-    
 
-    ball =  !inputA.get();      // This needs to be on an interrupt since only run every 20 msec
-    SmartDashboard.putBoolean("Ball Exit",ball);
+    /*  This method measures the time delay between when a ball breaks the beam of two sensors 
+        It uses this time delay to calculate the ball velocity using the distance between the sensors
+    */
     
-    if(!lastBall && ball){
-      startTime = Timer.getFPGATimestamp();
-      ++shotCount;          //  TODO  this counts ball going either way??
-      while ( inputB.get() ){   // no ball in 2nd sensor
-        endTime = Timer.getFPGATimestamp();
-        timeDelay = endTime - startTime;
-        if (timeDelay > .05) break;  // Don't hang here forever should be <.05 
-                                  // 0.05 won't trigger watchdog, but will lose 1 or 2 DS updates
-         // calculate velocity  for 3 inch separation of sensors
-        velocity = 1/( 4 * timeDelay);   // result in ft/sec
-      }
-    }
-    lastBall = ball;
+          // This is for testing sensors only runs every 20 msec
+    SmartDashboard.putBoolean("Detector 1", !inputA.get());   // comment it out so it doesn't waste resources
+    SmartDashboard.putBoolean("Detector 2", !inputB.get());
  
-    //timeDelay = endTime - startTime;
     
-    SmartDashboard.putNumber("Shots Fired",shotCount);
-    SmartDashboard.putNumber("Time Delay", timeDelay);
-    SmartDashboard.putNumber("Velocity", velocity);                     
+    startTime = inputA.readFallingTimestamp();  // Time since program started
+    endTime   = inputB.readFallingTimestamp();
 
+    if((startTime > lastEndTime) && (endTime > startTime)){  // new Ball
+     
+                     
+      if (shotCount >= 5) shotCount = 0;   // 5 is limit on number of power cells
+  
+      timeDelay = endTime - startTime;
+      
+      // calculate velocity  for detSpacing(inches)  of sensors
+      velocity = 1/( 12 * timeDelay/detSpacing);   // result in ft/sec
+             
+      
+      shotData[shotCount][0] =  velocity;
+      shotData[shotCount][1] = startTime;
+     
+      ++shotCount;   
+      SmartDashboard.putNumber("Shots Fired",shotCount);  // shot 1 is in array[0]
+      SmartDashboard.putNumber("Time Delay", timeDelay);
+      SmartDashboard.putNumber("Velocity", velocity);         
+    
+      System.out.println("Shot " + shotCount + ";  Start Time " + startTime + ":    Velocity " +velocity );  
+      
+      // TODO send shot count array to file log       
+    }
+    lastEndTime = endTime;
+
+
+    
   }
 
   public void zeroCount(){
