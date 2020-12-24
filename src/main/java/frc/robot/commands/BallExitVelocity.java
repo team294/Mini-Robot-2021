@@ -7,12 +7,16 @@
 
 package frc.robot.commands;
 
+import java.util.ArrayList;
+
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.Shooter;
+import frc.robot.subsystems.ShotData;
 
 
 public class BallExitVelocity extends CommandBase {
   private final Shooter shooter;
+  public ArrayList<ShotData> records = new ArrayList<ShotData>();
   /**
    * Creates a new Velocity */
   public BallExitVelocity (Shooter shooter) {

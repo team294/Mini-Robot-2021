@@ -7,8 +7,11 @@
 
 package frc.robot.subsystems;
 
+import java.util.ArrayList;
+
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpilibj.DigitalInput;
+import edu.wpi.first.wpilibj.InterruptHandlerFunction;
 import edu.wpi.first.wpilibj.InterruptableSensorBase;
 
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -23,7 +26,6 @@ public class Shooter extends SubsystemBase {
   boolean ball=false, lastBall;
   int shotCount = 0;
   double timeDelay, velocity, startTime = 0, endTime = 0, lastEndTime;
-  double[][] shotData;
   double[] velocityData;    // I couldn't find a good way to display a double array on Shufflboard
  
   private final DigitalInput  inputA = new DigitalInput(dioExitBallSensorA);
@@ -32,14 +34,55 @@ public class Shooter extends SubsystemBase {
  
   public Shooter() {
 
-     inputA.requestInterrupts();
-     inputA.setUpSourceEdge(false, true);
-     inputB.requestInterrupts();
-     inputB.setUpSourceEdge(false, true);
+    // InterruptHandlerFunction<Object> aInputHandler = new InterruptHandlerFunction<Object>();
 
-     shotData = new double [5][2];
+     inputA.requestInterrupts(new InterruptHandlerFunction<Object>() {
+       
+      @Override
+      public void interruptFired(int interruptAssertedMask, Object param) {
+        inputAEvent();
+      }
+     });
+     inputA.setUpSourceEdge(false, true);
+
+
+     inputB.requestInterrupts(new InterruptHandlerFunction<Object>() {
+       
+      @Override
+      public void interruptFired(int interruptAssertedMask, Object param) {
+        inputBEvent();
+      }
+     });
+     inputB.setUpSourceEdge(false, true);
   }
 
+  private void inputAEvent() {
+    startTime = inputA.readFallingTimestamp();  // Time since program started
+  }
+
+  private void inputBEvent() {
+    endTime   = inputB.readFallingTimestamp();
+    if((startTime > lastEndTime) && (endTime > startTime)){  // new Ball
+     
+                     
+      if (shotCount >= 5) shotCount = 0;   // 5 is limit on number of power cells
+  
+      timeDelay = endTime - startTime;
+      
+      // calculate velocity  for detSpacing(inches)  of sensors
+      velocity = 1/( 12 * timeDelay/detSpacing);   // result in ft/sec
+
+      records.add(new ShotData(velocity, timeDelay, shotCount));
+      
+      SmartDashboard.putNumber("Shots Fired",shotCount);  // shot 1 is in array[0]
+      SmartDashboard.putNumber("Time Delay", timeDelay);
+      SmartDashboard.putNumber("Velocity", velocity);         
+    
+      System.out.println("Shot " + shotCount + ";  Start Time " + startTime + ":    Velocity " +velocity );  
+      
+      // TODO send shot count array to file log       
+    }
+  }
   
   public void getTimeDelay(){  
 
@@ -52,44 +95,14 @@ public class Shooter extends SubsystemBase {
     SmartDashboard.putBoolean("Detector 2", !inputB.get());
  
     
-    startTime = inputA.readFallingTimestamp();  // Time since program started
-    endTime   = inputB.readFallingTimestamp();
-
-    if((startTime > lastEndTime) && (endTime > startTime)){  // new Ball
-     
-                     
-      if (shotCount >= 5) shotCount = 0;   // 5 is limit on number of power cells
-  
-      timeDelay = endTime - startTime;
-      
-      // calculate velocity  for detSpacing(inches)  of sensors
-      velocity = 1/( 12 * timeDelay/detSpacing);   // result in ft/sec
-             
-      
-      shotData[shotCount][0] =  velocity;
-      shotData[shotCount][1] = startTime;
-     
-      ++shotCount;   
-      SmartDashboard.putNumber("Shots Fired",shotCount);  // shot 1 is in array[0]
-      SmartDashboard.putNumber("Time Delay", timeDelay);
-      SmartDashboard.putNumber("Velocity", velocity);         
     
-      System.out.println("Shot " + shotCount + ";  Start Time " + startTime + ":    Velocity " +velocity );  
-      
-      // TODO send shot count array to file log       
-    }
     lastEndTime = endTime;
 
-
-    
   }
 
   public void zeroCount(){
     shotCount = 0;
   }
-
-  
-
 
   @Override
   public void periodic() {
