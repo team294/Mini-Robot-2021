@@ -16,7 +16,6 @@ import frc.robot.subsystems.ShotData;
 
 public class BallExitVelocity extends CommandBase {
   private final Shooter shooter;
-  public ArrayList<ShotData> records = new ArrayList<ShotData>();
   /**
    * Creates a new Velocity */
   public BallExitVelocity (Shooter shooter) {

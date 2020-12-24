@@ -27,6 +27,7 @@ public class Shooter extends SubsystemBase {
   int shotCount = 0;
   double timeDelay, velocity, startTime = 0, endTime = 0, lastEndTime;
   double[] velocityData;    // I couldn't find a good way to display a double array on Shufflboard
+  public ArrayList<ShotData> records = new ArrayList<ShotData>();
  
   private final DigitalInput  inputA = new DigitalInput(dioExitBallSensorA);
   private final DigitalInput  inputB = new DigitalInput(dioExitBallSensorB);
@@ -80,11 +81,13 @@ public class Shooter extends SubsystemBase {
     
       System.out.println("Shot " + shotCount + ";  Start Time " + startTime + ":    Velocity " +velocity );  
       
+      lastEndTime = endTime;
+
       // TODO send shot count array to file log       
     }
   }
   
-  public void getTimeDelay(){  
+  public ArrayList<ShotData> getTimeDelay(){  
 
     /*  This method measures the time delay between when a ball breaks the beam of two sensors 
         It uses this time delay to calculate the ball velocity using the distance between the sensors
@@ -94,10 +97,7 @@ public class Shooter extends SubsystemBase {
     SmartDashboard.putBoolean("Detector 1", !inputA.get());   // comment it out so it doesn't waste resources
     SmartDashboard.putBoolean("Detector 2", !inputB.get());
  
-    
-    
-    lastEndTime = endTime;
-
+    return records; // I don't really know what you want to do with the information
   }
 
   public void zeroCount(){
