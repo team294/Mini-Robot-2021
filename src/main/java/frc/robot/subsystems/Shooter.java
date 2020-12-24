@@ -16,6 +16,9 @@ import edu.wpi.first.wpilibj.InterruptableSensorBase;
 
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
+import frc.robot.utilities.ShotData;
+import frc.robot.utilities.FileLog;
+
 import static frc.robot.Constants.ShooterConstants.*;
 
 
@@ -27,14 +30,15 @@ public class Shooter extends SubsystemBase {
   int shotCount = 0;
   double timeDelay, velocity, startTime = 0, endTime = 0, lastEndTime;
   double[] velocityData;    // I couldn't find a good way to display a double array on Shufflboard
+  public FileLog log;
   public ArrayList<ShotData> records = new ArrayList<ShotData>();
  
   private final DigitalInput  inputA = new DigitalInput(dioExitBallSensorA);
   private final DigitalInput  inputB = new DigitalInput(dioExitBallSensorB);
    
  
-  public Shooter() {
-
+  public Shooter(FileLog log) {
+    this.log = log;
     // InterruptHandlerFunction<Object> aInputHandler = new InterruptHandlerFunction<Object>();
 
      inputA.requestInterrupts(new InterruptHandlerFunction<Object>() {
@@ -87,7 +91,7 @@ public class Shooter extends SubsystemBase {
     }
   }
   
-  public ArrayList<ShotData> getTimeDelay(){  
+  public void getTimeDelay(){  
 
     /*  This method measures the time delay between when a ball breaks the beam of two sensors 
         It uses this time delay to calculate the ball velocity using the distance between the sensors
@@ -97,7 +101,12 @@ public class Shooter extends SubsystemBase {
     SmartDashboard.putBoolean("Detector 1", !inputA.get());   // comment it out so it doesn't waste resources
     SmartDashboard.putBoolean("Detector 2", !inputB.get());
  
-    return records; // I don't really know what you want to do with the information
+    for (ShotData record: records) {
+      log.writeLog(false, "Shooter", "retrieveData", "Velocity", record.velocity, "Time Delay", record.timeDelay, "Shot Count", record.shotCount);
+    }
+
+    records.clear();
+    // return records; // I don't really know what you want to do with the information
   }
 
   public void zeroCount(){

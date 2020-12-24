@@ -1,4 +1,4 @@
-package frc.robot.subsystems;
+package frc.robot.utilities;
 
 public class ShotData {
     public double velocity, timeDelay;
