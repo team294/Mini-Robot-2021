@@ -29,9 +29,9 @@ public class Shooter extends SubsystemBase {
   boolean ball=false, lastBall;
   int shotCount = 0;
   double timeDelay, velocity, startTime = 0, endTime = 0, lastEndTime;
-  double[] velocityData;    // I couldn't find a good way to display a double array on Shufflboard
+  // double[] velocityData;    // I couldn't find a good way to display a double array on Shufflboard
   public FileLog log;
-  public ArrayList<ShotData> records = new ArrayList<ShotData>();
+  // public ArrayList<ShotData> records = new ArrayList<ShotData>();
  
   private final DigitalInput  inputA = new DigitalInput(dioExitBallSensorA);
   private final DigitalInput  inputB = new DigitalInput(dioExitBallSensorB);
@@ -77,17 +77,17 @@ public class Shooter extends SubsystemBase {
       // calculate velocity  for detSpacing(inches)  of sensors
       velocity = 1/( 12 * timeDelay/detSpacing);   // result in ft/sec
 
-      records.add(new ShotData(velocity, timeDelay, shotCount));
+      // records.add(new ShotData(velocity, timeDelay, shotCount));
       
       SmartDashboard.putNumber("Shots Fired",shotCount);  // shot 1 is in array[0]
       SmartDashboard.putNumber("Time Delay", timeDelay);
       SmartDashboard.putNumber("Velocity", velocity);         
     
+      updateShooterLog(false);
+
       System.out.println("Shot " + shotCount + ";  Start Time " + startTime + ":    Velocity " +velocity );  
       
       lastEndTime = endTime;
-
-      // TODO send shot count array to file log       
     }
   }
   
@@ -101,11 +101,11 @@ public class Shooter extends SubsystemBase {
     SmartDashboard.putBoolean("Detector 1", !inputA.get());   // comment it out so it doesn't waste resources
     SmartDashboard.putBoolean("Detector 2", !inputB.get());
  
-    for (ShotData record: records) {
-      log.writeLog(false, "Shooter", "retrieveData", "Velocity", record.velocity, "Time Delay", record.timeDelay, "Shot Count", record.shotCount);
-    }
+    // for (ShotData record: records) {
+      // log.writeLog(false, "Shooter", "retrieveData", "Velocity", record.velocity, "Time Delay", record.timeDelay, "Shot Count", record.shotCount);
+    // }
 
-    records.clear();
+    // records.clear();
     // return records; // I don't really know what you want to do with the information
   }
 
@@ -117,5 +117,16 @@ public class Shooter extends SubsystemBase {
   public void periodic() {
     // This method will be called once per scheduler run
     
+  }
+
+  /**
+   * Write information about shooter to fileLog.
+   * @param logWhenDisabled true = log when disabled, false = discard the string
+   */
+  public void updateShooterLog(boolean logWhenDisabled) {
+    log.writeLog(logWhenDisabled, "Shooter", "Output Data", 
+      "Velocity", velocity, 
+      "Time Delay", timeDelay, 
+      "Shots Fired", shotCount);
   }
 }
