@@ -77,8 +77,8 @@ public class Shooter extends SubsystemBase {
       SmartDashboard.putNumber("Velocity", velocity);         
     
       System.out.println("Shot " + shotCount + ";  Start Time " + startTime + ":    Velocity " +velocity );  
-      
-      // TODO send shot count array to file log       
+      updateShooterLog(false);
+           
     }
     lastEndTime = endTime;
 
@@ -96,7 +96,6 @@ public class Shooter extends SubsystemBase {
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
-    updateShooterLog(false);
   }
 
   /**
