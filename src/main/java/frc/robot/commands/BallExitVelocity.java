@@ -10,6 +10,9 @@ package frc.robot.commands;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.Shooter;
 import frc.robot.utilities.FileLog;
+import frc.robot.utilities.ShotData;
+
+import java.util.ArrayList;
 
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
@@ -42,7 +45,16 @@ public class BallExitVelocity extends CommandBase {
   @Override
   public void execute() {
     shooter.getTimeDelay();
-    shooter.updateShooterLog(false);
+    ArrayList<ShotData> records = shooter.getRecords();
+    for (ShotData data: records) {
+      System.out.println("Writing to log... ");  
+      log.writeLog(false, "Shooter", "Output Data", 
+        "Velocity", data.velocity, 
+        "Time Delay", data.timeDelay, 
+        "Shots Fired", data.shotCount);
+        System.out.println("Log written to");  
+    }
+    shooter.clearRecords();
   }
 
   // Called once the command ends or is interrupted.

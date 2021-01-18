@@ -119,19 +119,18 @@ public class Shooter extends SubsystemBase {
     
   }
 
-  /**
-   * Write information about shooter to fileLog.
-   * @param logWhenDisabled true = log when disabled, false = discard the string
-   */
-  public void updateShooterLog(boolean logWhenDisabled) {
-    for (ShotData data: records) {
-      System.out.println("Writing to log... ");  
-      log.writeLog(logWhenDisabled, "Shooter", "Output Data", 
-        "Velocity", data.velocity, 
-        "Time Delay", data.timeDelay, 
-        "Shots Fired", data.shotCount);
-        System.out.println("Log written to");  
-    }
+  public ArrayList<ShotData> getRecords() {
+    return records;
+  }
+
+  public void clearRecords() {
     records.clear();
   }
+
+  // /**
+  //  * Write information about shooter to fileLog.
+  //  * @param logWhenDisabled true = log when disabled, false = discard the string
+  //  */
+  // public void updateShooterLog(boolean logWhenDisabled) {
+  // }
 }
