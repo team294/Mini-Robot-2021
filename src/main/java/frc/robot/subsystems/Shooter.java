@@ -42,7 +42,7 @@ public class Shooter extends SubsystemBase {
     log.writeLog(false, "Shooter", "Initialized", 
       "Velocity", 0, 
       "Time Delay", 0, 
-      "Shots Fired", 0);
+      "Shots Fired", 0); 
     // InterruptHandlerFunction<Object> aInputHandler = new InterruptHandlerFunction<Object>();
     
      inputA.requestInterrupts(new InterruptHandlerFunction<Object>() {

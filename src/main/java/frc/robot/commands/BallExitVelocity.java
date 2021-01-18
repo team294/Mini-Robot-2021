@@ -10,6 +10,7 @@ package frc.robot.commands;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.Shooter;
 
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class BallExitVelocity extends CommandBase {
   private final Shooter shooter;
@@ -24,6 +25,9 @@ public class BallExitVelocity extends CommandBase {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
+    SmartDashboard.putNumber("Shots Fired", 0.0);  // shot 1 is in array[0]
+    SmartDashboard.putNumber("Time Delay", 0.0);
+    SmartDashboard.putNumber("Velocity", 0.0);      
     shooter.zeroCount();
   }
 
