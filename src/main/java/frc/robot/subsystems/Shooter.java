@@ -9,10 +9,11 @@ package frc.robot.subsystems;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpilibj.DigitalInput;
-import edu.wpi.first.wpilibj.InterruptableSensorBase;
+// import edu.wpi.first.wpilibj.InterruptableSensorBase;
 
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
+import frc.robot.utilities.FileLog;
 import static frc.robot.Constants.ShooterConstants.*;
 
 
@@ -25,13 +26,14 @@ public class Shooter extends SubsystemBase {
   double timeDelay, velocity, startTime = 0, endTime = 0, lastEndTime;
   double[][] shotData;
   double[] velocityData;    // I couldn't find a good way to display a double array on Shufflboard
+  FileLog log;
  
   private final DigitalInput  inputA = new DigitalInput(dioExitBallSensorA);
   private final DigitalInput  inputB = new DigitalInput(dioExitBallSensorB);
    
  
-  public Shooter() {
-
+  public Shooter(FileLog log) {
+    this.log = log;
      inputA.requestInterrupts();
      inputA.setUpSourceEdge(false, true);
      inputB.requestInterrupts();
@@ -94,6 +96,17 @@ public class Shooter extends SubsystemBase {
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
-    
+    updateShooterLog(false);
+  }
+
+  /**
+   * Write information about hopper to fileLog.
+   * @param logWhenDisabled true = log when disabled, false = discard the string
+   */
+	public void updateShooterLog(boolean logWhenDisabled) {
+		log.writeLog(logWhenDisabled, "Hopper", "Update Variables",  
+      "Velocity", velocity, 
+      "Time Delay", timeDelay
+    );
   }
 }
