@@ -31,7 +31,7 @@ public class Shooter extends SubsystemBase {
   double timeDelay, velocity, startTime = 0, endTime = 0, lastEndTime;
   // double[] velocityData;    // I couldn't find a good way to display a double array on Shufflboard
   public FileLog log;
-  // public ArrayList<ShotData> records = new ArrayList<ShotData>();
+  public ArrayList<ShotData> records = new ArrayList<ShotData>();
  
   private final DigitalInput  inputA = new DigitalInput(dioExitBallSensorA);
   private final DigitalInput  inputB = new DigitalInput(dioExitBallSensorB);
@@ -39,10 +39,6 @@ public class Shooter extends SubsystemBase {
  
   public Shooter(FileLog log) {
     this.log = log;
-    log.writeLog(false, "Shooter", "Initialized", 
-      "Velocity", 0, 
-      "Time Delay", 0, 
-      "Shots Fired", 0); 
     // InterruptHandlerFunction<Object> aInputHandler = new InterruptHandlerFunction<Object>();
     
      inputA.requestInterrupts(new InterruptHandlerFunction<Object>() {
@@ -81,13 +77,13 @@ public class Shooter extends SubsystemBase {
       // calculate velocity  for detSpacing(inches)  of sensors
       velocity = 1/( 12 * timeDelay/detSpacing);   // result in ft/sec
 
-      // records.add(new ShotData(velocity, timeDelay, shotCount));
+      records.add(new ShotData(velocity, timeDelay, shotCount));
       
       SmartDashboard.putNumber("Shots Fired",shotCount);  // shot 1 is in array[0]
       SmartDashboard.putNumber("Time Delay", timeDelay);
       SmartDashboard.putNumber("Velocity", velocity);         
     
-      updateShooterLog(false);
+      // updateShooterLog(false);
 
       System.out.println("Shot " + shotCount + ";  Start Time " + startTime + ":    Velocity " +velocity );  
       
@@ -128,9 +124,14 @@ public class Shooter extends SubsystemBase {
    * @param logWhenDisabled true = log when disabled, false = discard the string
    */
   public void updateShooterLog(boolean logWhenDisabled) {
-    log.writeLog(logWhenDisabled, "Shooter", "Output Data", 
-      "Velocity", velocity, 
-      "Time Delay", timeDelay, 
-      "Shots Fired", shotCount);
+    for (ShotData data: records) {
+      System.out.println("Writing to log... ");  
+      log.writeLog(logWhenDisabled, "Shooter", "Output Data", 
+        "Velocity", data.velocity, 
+        "Time Delay", data.timeDelay, 
+        "Shots Fired", data.shotCount);
+        System.out.println("Log written to");  
+    }
+    records.clear();
   }
 }

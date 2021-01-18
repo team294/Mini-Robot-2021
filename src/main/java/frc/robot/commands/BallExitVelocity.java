@@ -9,15 +9,22 @@ package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.Shooter;
+import frc.robot.utilities.FileLog;
 
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class BallExitVelocity extends CommandBase {
   private final Shooter shooter;
+  private final FileLog log;
   /**
    * Creates a new Velocity */
-  public BallExitVelocity (Shooter shooter) {
+  public BallExitVelocity (Shooter shooter, FileLog log) {
     this.shooter = shooter;
+    this.log = log;
+    log.writeLog(false, "Shooter", "Initialized", 
+      "Velocity", 0, 
+      "Time Delay", 0, 
+      "Shots Fired", 0);
     addRequirements(shooter);
     // Use addRequirements() here to declare subsystem dependencies.
   }
@@ -35,6 +42,7 @@ public class BallExitVelocity extends CommandBase {
   @Override
   public void execute() {
     shooter.getTimeDelay();
+    shooter.updateShooterLog(false);
   }
 
   // Called once the command ends or is interrupted.
