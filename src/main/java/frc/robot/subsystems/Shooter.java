@@ -104,7 +104,7 @@ public class Shooter extends SubsystemBase {
    * @param logWhenDisabled true = log when disabled, false = discard the string
    */
 	public void updateShooterLog(boolean logWhenDisabled) {
-		log.writeLog(logWhenDisabled, "Hopper", "Update Variables",  
+		log.writeLog(logWhenDisabled, "Shooter", "Update Variables",  
       "Velocity", velocity, 
       "Time Delay", timeDelay
     );
