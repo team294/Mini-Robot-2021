@@ -16,6 +16,8 @@ import static frc.robot.Constants.OIConstants.*;
 
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
+import frc.robot.utilities.FileLog;
+
 
 /**
  * This class is where the bulk of the robot should be declared.  Since Command-based is a
@@ -25,8 +27,9 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
  */
 public class RobotContainer {
   // The robot's subsystems and commands are defined here...
+  private final FileLog log = new FileLog("A4");
   private final DriveTrain m_driveTrain = new DriveTrain();
-  private final Shooter shooter = new Shooter();
+  private final Shooter shooter = new Shooter(log);
   
   private final ExampleCommand m_autoCommand = new ExampleCommand(m_driveTrain);  // runs in autonomous
 
